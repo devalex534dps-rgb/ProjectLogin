@@ -137,9 +137,46 @@
             </form>
         </div>
     </div>
+    <script src="js/main.js"></script>
 
 </body>
 <script src="libreria/utileria.js"></script>
-<script src="js/main.js"></script>
+<script>
+    if (captureForm) {
+        captureForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('modal-username').value.trim();
+            const correo = document.getElementById('modal-email').value.trim();
+            const edad = parseInt(document.getElementById('modal-age').value, 10);
+            const password = document.getElementById('modal-password').value.trim();
+
+            if (isNaN(edad) || edad <= 0) {
+                alert("Por favor ingresa una edad válida.");
+                return;
+            }
+
+            let usuarios = JSON.parse(localStorage.getItem('usuariosSistema')) || [];
+            if (usuarios.some(u => u.email.toLowerCase() === correo.toLowerCase())) {
+                alert("Este correo ya se encuentra registrado.");
+                return;
+            }
+
+            const nuevoUsuario = {
+                nombre: nombre,
+                email: correo,
+                edad: edad,
+                password: password,
+                numControl: ''
+            };
+
+            usuarios.push(nuevoUsuario);
+            localStorage.setItem('usuariosSistema', JSON.stringify(usuarios));
+
+            alert("¡Usuario capturado con éxito!");
+            captureModal.classList.remove('active');
+            captureForm.reset();
+        });
+    }
+</script>
 
 </html>

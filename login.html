@@ -84,7 +84,51 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Llibrería de utilerías y lógica de validación -->
   <script src="libreria/utileria.js"></script>
-  <script src="js/main.js"></script>
 </body>
+<script>
+  if (formRegister) {
+    formRegister.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('regUsername').value.trim();
+      const correo = document.getElementById('regEmail').value.trim();
+      const edadInput = document.getElementById('regAge').value;
+      const edad = parseInt(edadInput, 10); // Parsear explícitamente a entero
+      const password = document.getElementById('regPassword').value.trim();
+
+      if (isNaN(edad) || edad <= 0) {
+        alert("Por favor ingresa una edad válida.");
+        return;
+      }
+
+      let usuarios = JSON.parse(localStorage.getItem('usuariosSistema')) || [];
+      if (usuarios.some(u => u.email.toLowerCase() === correo.toLowerCase())) {
+        alert("El correo electrónico ya está registrado.");
+        return;
+      }
+
+      const nuevoUsuario = {
+        nombre: nombre,
+        email: correo,
+        edad: edad,
+        password: password,
+        numControl: ''
+      };
+
+      usuarios.push(nuevoUsuario);
+      localStorage.setItem('usuariosSistema', JSON.stringify(usuarios));
+
+      localStorage.setItem('sesionActiva', JSON.stringify(nuevoUsuario));
+
+      if (regAlert) {
+        regAlert.textContent = "¡Cuenta registrada exitosamente!";
+        regAlert.classList.remove('d-none');
+      }
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 800);
+    });
+  }
+</script>
 
 </html>
