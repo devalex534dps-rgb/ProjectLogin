@@ -1,15 +1,46 @@
-
 document.addEventListener('DOMContentLoaded', () => {
 
     // 0. Control de sesión y visualización del usuario activo
+    const sesionRaw = localStorage.getItem('sesionActiva');
+    const userNameSpan = document.getElementById('navbarUserName') || document.querySelector('.user-name');
+    const ageModal = document.getElementById('ageModal');
+    const ageModalContent = document.getElementById('ageModalContent');
     const usuarioActivo = localStorage.getItem('sesionActiva');
-    const userNameSpan = document.querySelector('.user-name');
     
-    if (usuarioActivo && userNameSpan) {
-        userNameSpan.textContent = usuarioActivo;
-    } else {
-        // Si no hay sesión activa, redirigir al login
-        window.location.href = 'login.html';
+    let activeUser = null;
+
+    if(sesionRaw){
+        try{
+            activeUser = JSON.parse(sesionRaw);
+        } catch (e){
+            const usuarios = JSON.parse(localStorage.getItem('usuariosSistema')) || [];
+            activeUser = usuarios.find(u => u.email === sesionRaw);
+        }
+
+    }
+
+    if(!activeUser){
+        window.GeolocationCoordinates.href = 'login.html';
+        return;
+    }
+
+    if(userNameSpan){
+        userNameSpan.textContent = activeUser.nombre || activeUser.username || "usuario";
+    }
+
+    const edadNum = parseInt(activeUser.edad || activeUser.age || 0, 10);
+    const esMayor = edadNum >= 18;
+    const textoEdad = esMayor ? `mayor de Edad (${edadNum} años)` : `Menor de Edad (${edadNum} años)`;
+
+    if(statusBadge){
+        statusBadge.textContent = textoEdad;
+        statusBadge.classList.add('visible');
+    }
+
+    if(ageModal && ageModalContent){
+        ageModalContent.textContent = `Bienvenido(a) ${activeUser.nombre || activeUser.username}. Eres ${textoEdad}.`;
+        ageModalContent.style.color = esMayor ? '#16a34a' : '#dc2626';
+        ageModal.classList.add('active');
     }
 
     // Referencias del DOM
@@ -27,8 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const captureMenuOption = document.getElementById('captureMenuOption');
     const captureModal = document.getElementById('captureModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
+    const closeAgeModalBtn = document.getElementById('closeAgeModalBtn');
     const captureForm = document.getElementById('captureForm');
     const btnLogout = document.getElementById('btnLogout');
+
+    if (closeAgeModalBtn) {
+        closeAgeModalBtn.addEventListener('click', () => {
+            ageModal.classList.remove('active');
+        });
+    }
 
     // 1. Toggle Sidebar
     if (toggleSidebarBtn) {
