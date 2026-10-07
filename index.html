@@ -39,15 +39,15 @@
         </nav>
     </aside>
 
-    
+
 
     <!-- WRAPPER PRINCIPAL -->
     <div class="main-wrapper">
         <header class="navbar">
             <div class="user-profile">
-                <span class="user-name">name_usuario</span>
+                <span class="user-name" id="navbarUserName">name_usuario</span>
             </div>
-            
+
 
             <div class="dropdown-container">
                 <button class="icon-btn" id="toggleNavbarMenu" aria-label="Opciones de usuario">
@@ -59,15 +59,14 @@
                 </button>
 
                 <div class="dropdown-menu" id="userDropdown">
-                <button class="dropdown-item" id="btnLogout">Cerrar Sesión</button>
-                    <button class="dropdown-item">Cerrar Sesión</button>
+                    <button class="dropdown-item" id="btnLogout">Cerrar Sesión</button>
                 </div>
             </div>
         </header>
 
         <main class="content-container">
             <div class="status-badge" id="statusBadge">
-                Eres Mayor / Menor de Edad
+                Verificando datos...
             </div>
 
             <div class="card-form">
@@ -79,6 +78,24 @@
                 <button type="button" class="btn-primary" id="validateBtn">Validar</button>
             </div>
         </main>
+    </div>
+
+    <!--Modal de Evaluacion de Edad-->
+    <div class="modal-overlay" id="ageModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" id="closeAgeModalBtn" arai-label="Cerrar Modal">
+                <svg class="close-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 class="modal-title">Estado del usuario</h2>
+            <div id="ageModalContent"
+                style="text-align: center; font-size: 1.1rem; font-weight: 600; margin-top: 15px;">
+
+            </div>
+        </div>
     </div>
 
     <!-- MODAL FORMULARIO DE CAPTURA CON FONDO BLUR -->
@@ -107,6 +124,11 @@
                 </div>
 
                 <div class="modal-field">
+                    <label for="modal-age">Edad</label>
+                    <input type="number" id="modal-age" placeholder="Ej. 21" min="1" max="120" required>
+                </div>
+
+                <div class="modal-field">
                     <label for="modal-password">Contraseña</label>
                     <input type="password" id="modal-password" placeholder="••••••••" required>
                 </div>
@@ -115,10 +137,9 @@
             </form>
         </div>
     </div>
-  
-    <script src="libreria/utileria.js"></script>
-    
+
 </body>
+<script src="libreria/utileria.js"></script>
 <script src="js/main.js"></script>
 
 </html>
